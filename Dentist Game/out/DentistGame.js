@@ -31,6 +31,36 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	}
 
 
+(lib.Tool2 = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// Layer_1
+	this.shape = new cjs.Shape();
+	this.shape.graphics.f("#000099").s().p("Ag8DhQgIiMgaiHQgciTgriJQgMglAUgQIACAGQAPAHAQADQASADATgCIADgCIAJgGIAGgOIAJACQBUBUALB3QANCTBOB8QBWCJhRB3QgRAZgWAcQiPgRgJiXg");
+	this.shape.setTransform(20.1,63.2);
+
+	this.shape_1 = new cjs.Shape();
+	this.shape_1.graphics.f("#CCCCCC").s().p("AAGCBQgPgDgPgHIgCgGIgWgyQgSgtgDgwQgDgpAPglQAIgWATAAQA3AEAMA1QAKArAPAoQAQAsgQAyIgBAEIgGAOIgJAGIgDACIgRABQgKAAgKgCg");
+	this.shape_1.setTransform(7,13.1);
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_1},{t:this.shape}]}).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.Tool2, new cjs.Rectangle(0,0,37.2,102.5), null);
+
+
+(lib.Tool1 = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// Layer_1
+	this.shape = new cjs.Shape();
+	this.shape.graphics.f("#000099").s().p("ACTG7QgKAAgLgDIgIgJIgJgJIgGgJIgDgJIgCgJIAAgIIgBgJQgzglgLhDQgVh3gOh6QgPh3gah1QgPhGgChJIgDgGIgDgCQgKgEgLgBQgZgCgZAAIgDAJIgFAJIgFAIIgMATQgLAPACAUQADAYgPATQgEAFgGAFIgOABQghgBgEgdQgGgoANgmQARgwAdgpQAOgSARgBQApAAApACIAyACQATACATAAQA5BEACBbQAECdAsCQQAsCQBDCJQAlBKg0A7QgDADgEABQgGADgIAAIgQAAIgfgBg");
+	this.shape.setTransform(24.5,44.4);
+
+	this.timeline.addTween(cjs.Tween.get(this.shape).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.Tool1, new cjs.Rectangle(0,0,49,88.9), null);
+
+
 (lib.dirt = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
 
@@ -268,7 +298,52 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 (lib.DentistGame = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
 
-	// Layer_9
+	// timeline functions:
+	this.frame_0 = function() {
+		var tools = [this.tool1, this.tool2];
+		
+		for (var i = 0; i < tools.length; i++) {
+			var tool = tools[i];
+			tool.toolIndex = i;
+			tool.startX = tool.x;
+			tool.startY = tool.y;
+			
+			tool.addEventListener("pressmove", onToolDrag.bind(this));
+			tool.addEventListener("pressup", onToolDrop.bind(this));
+		}
+		
+		function onToolDrag(evt) {
+			evt.currentTarget.x = evt.stageX;
+			evt.currentTarget.y = evt.stageY;
+			evt.currentTarget.mouseEnabled = false;
+			console.log(evt.currentTarget.toolIndex);
+		}
+		
+		function onToolDrop(evt) {
+			evt.currentTarget.x = evt.currentTarget.startX;
+			evt.currentTarget.y = evt.currentTarget.startY;
+			evt.currentTarget.mouseEnabled = true;
+			console.log(evt.currentTarget.toolIndex);
+		}
+	}
+
+	// actions tween:
+	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
+
+	// Tools
+	this.tool2 = new lib.Tool2();
+	this.tool2.name = "tool2";
+	this.tool2.parent = this;
+	this.tool2.setTransform(522.8,408.2,1,1,0,0,0,18.6,51.2);
+
+	this.tool1 = new lib.Tool1();
+	this.tool1.name = "tool1";
+	this.tool1.parent = this;
+	this.tool1.setTransform(462.8,416.8,1,1,0,0,0,24.5,44.5);
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.tool1},{t:this.tool2}]}).wait(1));
+
+	// Mouth
 	this.instance = new lib.Mouth();
 	this.instance.parent = this;
 	this.instance.setTransform(330.9,269.4,0.619,0.592,0,-2.4,-2.5,-0.4,2.5);
@@ -293,7 +368,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/elsa.jpg?1512199982486", id:"elsa"}
+		{src:"images/elsa.jpg?1512230778711", id:"elsa"}
 	],
 	preloads: []
 };

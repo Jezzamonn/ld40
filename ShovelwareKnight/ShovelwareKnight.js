@@ -6,12 +6,64 @@ lib.ssMetadata = [];
 
 
 // symbols:
+// helper functions:
 
+function mc_symbol_clone() {
+	var clone = this._cloneProps(new this.constructor(this.mode, this.startPosition, this.loop));
+	clone.gotoAndStop(this.currentFrame);
+	clone.paused = this.paused;
+	clone.framerate = this.framerate;
+	return clone;
+}
+
+function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
+	var prototype = cjs.extend(symbol, cjs.MovieClip);
+	prototype.clone = mc_symbol_clone;
+	prototype.nominalBounds = nominalBounds;
+	prototype.frameBounds = frameBounds;
+	return prototype;
+	}
+
+
+(lib.testdrag = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// Layer_1
+	this.shape = new cjs.Shape();
+	this.shape.graphics.f().s("#AB6349").ss(4.1,1,1).p("AMqAAQAAEijtDNQjtDNlQAAQlPAAjtjNQjtjNAAkiQAAkhDtjNQDtjNFPAAQFQAADtDNQDtDNAAEhg");
+
+	this.shape_1 = new cjs.Shape();
+	this.shape_1.graphics.f("#000099").s().p("Ao8HvQjtjNAAkiQAAkhDtjNQDujNFOAAQFQAADsDNQDuDNAAEhQAAEijuDNQjsDNlQAAQlOAAjujNg");
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_1},{t:this.shape}]}).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.testdrag, new cjs.Rectangle(-83,-72,166,144), null);
 
 
 // stage content:
 (lib.ShovelwareKnight = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
+
+	// timeline functions:
+	this.frame_0 = function() {
+		this.circle.on("pressmove", dragCircle.bind(this));
+		
+		function dragCircle (evt) {
+			this.circle.x = evt.stageX;
+			this.circle.y = evt.stageY;
+		};
+	}
+
+	// actions tween:
+	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(1));
+
+	// Actions
+	this.circle = new lib.testdrag();
+	this.circle.name = "circle";
+	this.circle.parent = this;
+	this.circle.setTransform(233,327.9);
+
+	this.timeline.addTween(cjs.Tween.get(this.circle).wait(1));
 
 	// Layer_1
 	this.shape = new cjs.Shape();
@@ -81,7 +133,7 @@ lib.ssMetadata = [];
 	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_15},{t:this.shape_14},{t:this.shape_13},{t:this.shape_12},{t:this.shape_11},{t:this.shape_10},{t:this.shape_9},{t:this.shape_8},{t:this.shape_7},{t:this.shape_6},{t:this.shape_5},{t:this.shape_4},{t:this.shape_3},{t:this.shape_2},{t:this.shape_1},{t:this.shape}]}).wait(1));
 
 }).prototype = p = new cjs.MovieClip();
-p.nominalBounds = new cjs.Rectangle(372,262,533.7,159.6);
+p.nominalBounds = new cjs.Rectangle(372,262,533.7,377.9);
 // library properties:
 lib.properties = {
 	id: 'D42CE693D01346F0B0617E35B8588BF1',
