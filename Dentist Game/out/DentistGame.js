@@ -339,7 +339,7 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	this.tool1 = new lib.Tool1();
 	this.tool1.name = "tool1";
 	this.tool1.parent = this;
-	this.tool1.setTransform(462.8,416.8,1,1,0,0,0,24.5,44.5);
+	this.tool1.setTransform(451.1,370.7,1,1,0,0,0,-0.2,-0.4);
 
 	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.tool1},{t:this.tool2}]}).wait(1));
 
@@ -368,7 +368,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/elsa.jpg?1512230778711", id:"elsa"}
+		{src:"images/elsa.jpg?1512244666977", id:"elsa"}
 	],
 	preloads: []
 };

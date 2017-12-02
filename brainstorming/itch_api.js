@@ -21,7 +21,13 @@ Itch.getGameData({user:'jezzamon', game:'adventure-boy-cheapskate', onComplete: 
 
 var inp = document.createElement("input");
 inp.setAttribute("type", "file");
+inp.style.position = "absolute";
+inp.style.top = "0px"
+inp.style.left = '0px';
+inp.style.width = '640px';
+inp.style.height = '100px';
 document.getElementById("animation_container").appendChild(inp)
+
 inp.files
 
 document.getElementById('file').onchange = function() {
