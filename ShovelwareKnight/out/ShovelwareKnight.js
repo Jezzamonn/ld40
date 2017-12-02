@@ -2,27 +2,17 @@
 
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
-lib.ssMetadata = [
-		{name:"ShovelwareKnight_atlas_", frames: [[0,0,300,300],[0,302,60,58]]}
-];
+lib.ssMetadata = [];
 
 
 // symbols:
 
 
 
-(lib._57951907 = function() {
-	this.spriteSheet = ss["ShovelwareKnight_atlas_"];
-	this.gotoAndStop(0);
-}).prototype = p = new cjs.Sprite();
-
-
-
 (lib.knight = function() {
-	this.spriteSheet = ss["ShovelwareKnight_atlas_"];
-	this.gotoAndStop(1);
-}).prototype = p = new cjs.Sprite();
-// helper functions:
+	this.initialize(img.knight);
+}).prototype = p = new cjs.Bitmap();
+p.nominalBounds = new cjs.Rectangle(0,0,60,58);// helper functions:
 
 function mc_symbol_clone() {
 	var clone = this._cloneProps(new this.constructor(this.mode, this.startPosition, this.loop));
@@ -157,14 +147,7 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 (lib.image = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
 
-	// Layer_1
-	this.instance = new lib._57951907();
-	this.instance.parent = this;
-	this.instance.setTransform(-150,-150);
-
-	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
-
-}).prototype = getMCSymbolPrototype(lib.image, new cjs.Rectangle(-150,-150,300,300), null);
+}).prototype = getMCSymbolPrototype(lib.image, null, null);
 
 
 (lib.Mouth = function(mode,startPosition,loop) {
@@ -328,6 +311,10 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 		function onThingDrag(evt) {
 			evt.currentTarget.x = evt.stageX - this.x;
 			evt.currentTarget.y = evt.stageY - this.y;
+			if (evt.currentTarget.hasOwnProperty("mouseStartX")) {
+				evt.currentTarget.x -= evt.currentTarget.mouseStartX;
+				evt.currentTarget.y -= evt.currentTarget.mouseStartY;
+			}
 			this.selectedThing = evt.currentTarget;
 		}
 		
@@ -383,10 +370,11 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 			if (this.hasOwnProperty('image') && this.contains(this.image)) {
 				this.removeChild(this.image);
 			}
-			var bitmap = new createjs.Bitmap(url);
-			var image = new createjs.MovieClip();
-			image.addChild(bitmap);
-			this.image = image;
+			this.image = new createjs.Bitmap(url);
+			this.image.addEventListener("mousedown", function(evt) {
+				evt.currentTarget.mouseStartX = evt.localX * evt.currentTarget.scaleX;
+				evt.currentTarget.mouseStartY = evt.localY * evt.currentTarget.scaleY;
+			});
 			this.image.addEventListener("pressmove", onThingDrag.bind(this));
 			// TODO: default positioning. Maybe copy from old thing?
 			this.addChildAt(this.image, 0);
@@ -634,7 +622,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/ShovelwareKnight_atlas_.png?1512256072177", id:"ShovelwareKnight_atlas_"}
+		{src:"images/knight.png?1512256977251", id:"knight"}
 	],
 	preloads: []
 };
