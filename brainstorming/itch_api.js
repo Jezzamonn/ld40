@@ -13,3 +13,17 @@ Itch.getGameData({user:'jezzamon', game:'adventure-boy-cheapskate', onComplete: 
 // 	sale: false,
 // 	title: "Adventure Boy Cheapskate",
 // }
+
+
+
+// HTML to create for upload
+// <input type="file" style="position: absolute;top: 0px;left: 0px;width: 200px;height: 100px;">
+
+var inp = document.createElement("input");
+inp.setAttribute("type", "file");
+document.getElementById("animation_container").appendChild(inp)
+inp.files
+
+document.getElementById('file').onchange = function() {
+    // fire the upload here
+};
