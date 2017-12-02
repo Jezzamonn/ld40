@@ -357,10 +357,39 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 			this.selectedThing.rotation += 10;
 		}
 		
+		// Image uploading
+		
 		function doUpload(evt) {
 			var inp = document.createElement("input");
 			inp.setAttribute("type", "file");
+			inp.onchange = onSelectEnd.bind(this);
 			inp.click();
+		}
+		
+		function onSelectEnd(evt) {
+			console.log("onSelectEnd");
+			var inp = event.currentTarget;
+			// We want just one file. TODO: Handle other alternatives here
+			if (inp.files.length != 1) return;
+			
+			// Read the file
+			reader = new FileReader();
+			reader.onload = onLoad.bind(this);
+			reader.readAsDataURL(inp.files[0]);
+		}
+		
+		function onLoad(evt) {
+			var url = evt.currentTarget.result;
+			if (this.hasOwnProperty('image') && this.contains(this.image)) {
+				this.removeChild(this.image);
+			}
+			var bitmap = new createjs.Bitmap(url);
+			var image = new createjs.MovieClip();
+			image.addChild(bitmap);
+			this.image = image;
+			this.image.addEventListener("pressmove", onThingDrag.bind(this));
+			// TODO: default positioning. Maybe copy from old thing?
+			this.addChildAt(this.image, 0);
 		}
 	}
 
@@ -605,7 +634,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/ShovelwareKnight_atlas_.png?1512253743090", id:"ShovelwareKnight_atlas_"}
+		{src:"images/ShovelwareKnight_atlas_.png?1512256072177", id:"ShovelwareKnight_atlas_"}
 	],
 	preloads: []
 };
