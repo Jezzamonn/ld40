@@ -920,9 +920,9 @@ p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 				return;
 			}
 			// Package into Zip!
-			generateGame(this.image, this.mouth);
+			generateGame(this.image, this.mouth, {name: 'boy'});
 			
-			done();
+			//done();
 		}
 		
 		function done(evt) {
@@ -1285,8 +1285,8 @@ lib.properties = {
 	opacity: 1.00,
 	webfonts: {},
 	manifest: [
-		{src:"images/index_atlas_.png?1512331361878", id:"index_atlas_"},
-		{src:"sounds/OverworldSong.mp3?1512331361963", id:"OverworldSong"}
+		{src:"images/index_atlas_.png?1512333782582", id:"index_atlas_"},
+		{src:"sounds/OverworldSong.mp3?1512333782658", id:"OverworldSong"}
 	],
 	preloads: []
 };

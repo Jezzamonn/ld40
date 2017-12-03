@@ -128,7 +128,7 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	// timeline functions:
 	this.frame_0 = function() {
 		/*COMMENTED_FOR_DEV
-		this.title = __CHARACTER__ + "at the Dentist";
+		this.titleText.text = "__CHARACTER__ at the Dentist";
 		COMMENTED_FOR_DEV*/
 	}
 
@@ -445,19 +445,6 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	this.frame_0 = function() {
 		this.stop();
 		
-		this.nextFrame = function (evt) {
-			var gameFrame = 1;
-			this.gotoAndStop(this.currentFrame + 1);
-			if (this.currentFrame == 1) {
-				stage.removeEventListener("stagemousedown", this.nextFrame);
-			}
-		}.bind(this);
-		
-		stage.addEventListener("stagemousedown", this.nextFrame);
-		
-		createjs.Sound.play('Song', createjs.Sound.INTERRUPT_NONE, 0, 20, -1);
-	}
-	this.frame_1 = function() {
 		// SET POSITION OF STUFF. These lines are set when the game is built >:)
 		/*COMMENTED_FOR_DEV
 		this.image.x = __IMAGE_X__;
@@ -476,6 +463,19 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 		this.mouth.rotation = __MOUTH_ROTATION__;
 		COMMENTED_FOR_DEV*/
 		
+		this.nextFrame = function (evt) {
+			var gameFrame = 1;
+			this.gotoAndStop(this.currentFrame + 1);
+			if (this.currentFrame == 1) {
+				stage.removeEventListener("stagemousedown", this.nextFrame);
+			}
+		}.bind(this);
+		
+		stage.addEventListener("stagemousedown", this.nextFrame);
+		
+		createjs.Sound.play('Song', createjs.Sound.INTERRUPT_NONE, 0, 20, -1);
+	}
+	this.frame_1 = function() {
 		var tools = [this.tool1, this.tool2];
 		
 		// aw yeah global variable
@@ -632,8 +632,8 @@ lib.properties = {
 	opacity: 1.00,
 	webfonts: {},
 	manifest: [
-		{src:"images/image.jpg?1512327650715", id:"image"},
-		{src:"sounds/Song.mp3?1512327650715", id:"Song"}
+		{src:"images/image.jpg?1512333739609", id:"image"},
+		{src:"sounds/Song.mp3?1512333739609", id:"Song"}
 	],
 	preloads: []
 };
