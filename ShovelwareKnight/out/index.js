@@ -663,11 +663,7 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 		
 		function doSave(evt) {
 			// Package into Zip!
-			console.log(this.image);
-			console.log(this.mouth);
-			
-			globalImage = this.image;
-			globalMouth = this.mouth;
+			generateGame(this.image, this.mouth);
 		}
 	}
 
@@ -975,7 +971,7 @@ lib.properties = {
 	color: "#999999",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/index_atlas_.png?1512282923338", id:"index_atlas_"}
+		{src:"images/index_atlas_.png?1512285397073", id:"index_atlas_"}
 	],
 	preloads: []
 };
