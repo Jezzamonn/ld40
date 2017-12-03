@@ -3,7 +3,7 @@
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
 lib.ssMetadata = [
-		{name:"index_atlas_", frames: [[62,0,30,64],[0,62,60,58],[0,0,60,60]]}
+		{name:"index_atlas_", frames: [[0,62,30,64],[32,62,30,64],[64,60,30,64],[96,60,22,34],[62,0,60,58],[0,0,60,60]]}
 ];
 
 
@@ -18,16 +18,37 @@ lib.ssMetadata = [
 
 
 
-(lib.knight = function() {
+(lib.checkpoint2 = function() {
 	this.spriteSheet = ss["index_atlas_"];
 	this.gotoAndStop(1);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.PoopKnight = function() {
+(lib.checkpoint3 = function() {
 	this.spriteSheet = ss["index_atlas_"];
 	this.gotoAndStop(2);
+}).prototype = p = new cjs.Sprite();
+
+
+
+(lib.checkpoint4 = function() {
+	this.spriteSheet = ss["index_atlas_"];
+	this.gotoAndStop(3);
+}).prototype = p = new cjs.Sprite();
+
+
+
+(lib.knight = function() {
+	this.spriteSheet = ss["index_atlas_"];
+	this.gotoAndStop(4);
+}).prototype = p = new cjs.Sprite();
+
+
+
+(lib.poop = function() {
+	this.spriteSheet = ss["index_atlas_"];
+	this.gotoAndStop(5);
 }).prototype = p = new cjs.Sprite();
 // helper functions:
 
@@ -202,6 +223,19 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 }).prototype = getMCSymbolPrototype(lib.rotateleftbutton, new cjs.Rectangle(-20.4,-20.4,40.8,40.8), null);
 
 
+(lib.PoopKnight = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// Layer_1
+	this.instance = new lib.poop();
+	this.instance.parent = this;
+	this.instance.setTransform(-30,-60);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.PoopKnight, new cjs.Rectangle(-30,-60,60,60), null);
+
+
 (lib.PlayerKnight = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
 
@@ -304,14 +338,53 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 (lib.CheckPoint = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
 
+	// timeline functions:
+	this.frame_0 = function() {
+		stop();
+		
+		this.updateFrame = function() {
+			// requires health to be set
+			var healthAmt = this.health / this.maxHealth;
+			if (healthAmt < 0) {
+				this.gotoAndStop(3);
+				this.dead = true;
+			}
+			else if (healthAmt < 0.3) {
+				this.gotoAndStop(2);
+			}
+			else if (healthAmt < 0.7) {
+				this.gotoAndStop(1);
+			}
+			else {
+				this.gotoAndStop(0);
+			}
+		}.bind(this);
+	}
+
+	// actions tween:
+	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(4));
+
 	// Layer_1
 	this.instance = new lib.checkpoint();
 	this.instance.parent = this;
 	this.instance.setTransform(-15,-64);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
+	this.instance_1 = new lib.checkpoint2();
+	this.instance_1.parent = this;
+	this.instance_1.setTransform(-15,-64);
 
-}).prototype = getMCSymbolPrototype(lib.CheckPoint, new cjs.Rectangle(-15,-64,30,64), null);
+	this.instance_2 = new lib.checkpoint3();
+	this.instance_2.parent = this;
+	this.instance_2.setTransform(-15,-64);
+
+	this.instance_3 = new lib.checkpoint4();
+	this.instance_3.parent = this;
+	this.instance_3.setTransform(-11,-34);
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.instance}]}).to({state:[{t:this.instance_1}]},1).to({state:[{t:this.instance_2}]},1).to({state:[{t:this.instance_3}]},1).wait(1));
+
+}).prototype = p = new cjs.MovieClip();
+p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 
 
 (lib.Tree = function(mode,startPosition,loop) {
@@ -486,32 +559,37 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 
 	// timeline functions:
 	this.frame_0 = function() {
+		// Who doesn't love Global Variables?
+		globalGameManager = this;
+		
 		this.reputation = 100;
-		this.moving = true;
 		this.moveSpeed = 10;
+		
+		this.atCheckPoint = false;
 		var checkPointPos = 100;
 		
 		this.background = new lib.Background();
 		this.player = new lib.PlayerKnight();
 		this.player.x = -100;
-		this.creations = [];
+		this.bots = [];
+		
 		this.checkPoint = null;
 		
 		this.bgLaya.addChild(this.background);
 		this.background.playaLaya.addChild(this.player);
 		
 		this.addCheckPoint = function() {
-			if (this.checkPoint) {
-				this.background.checkPointLaya.removeChild(this.checkPoint);
-			}
 			this.checkPoint = new lib.CheckPoint();
 			this.checkPoint.x = 1000;
+			this.checkPoint.health = 100;
+			this.checkPoint.maxHealth = 100;
+			this.checkPoint.stop();
 			this.background.checkPointLaya.addChild(this.checkPoint);
 		}.bind(this);
 		
 		// Bind functions here so we can remove them if needed.
 		this.onCraftClick = function(evt) {
-			if (!this.moving) {
+			if (this.atCheckPoint) {
 				this.editor = new lib.Editor();
 				this.addChild(this.editor);
 			}
@@ -519,10 +597,23 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 		
 		
 		this.everyFrame = function(evt) {
-			if (this.moving) {
+			if (this.editor) {
+				// don't do anything if we're in the editor
+				return;
+			}
+			
+			if (this.atCheckPoint) {
+				this.checkPoint.health -= this.bots.length;
+				this.checkPoint.updateFrame();
+				if (this.checkPoint.dead) {
+					this.addCheckPoint();
+					this.atCheckPoint = false;
+				}
+			}
+			else {
 				if (this.checkPoint && this.checkPoint.x - checkPointPos < this.moveSpeed) {
 					this.background.move(-this.checkPoint.x + checkPointPos);
-					this.moving = false;
+					this.atCheckPoint = true;
 					// Switch to the thing to enable crafting
 				}
 				else {
@@ -530,6 +621,22 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 				}
 			}
 		}.bind(this);
+		
+		
+		this.exitEditor = function(evt) {
+			this.removeChild(this.editor);
+			this.editor = null;
+		}.bind(this);
+		
+		
+		this.addNewBot = function(evt) {
+			var bot = new lib.PoopKnight();
+			
+			bot.x = Math.round(-50 + 100 * Math.random());
+			this.background.playaLaya.addChild(bot);
+			this.bots.push(bot);
+		}.bind(this);
+		
 		
 		
 		this.addCheckPoint();
@@ -739,7 +846,18 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 			image.y += yDiff;
 		}
 		
+		// Try save, but don't if there's no image
+		
 		function doSave(evt) {
+			if (this.image == null || this.mouth == null) {
+				console.log('not saving that crap');
+				// Quick hack here to test file stuff
+				
+				globalGameManager.exitEditor();
+				globalGameManager.addNewBot();
+				
+				return;
+			}
 			// Package into Zip!
 			generateGame(this.image, this.mouth);
 		}
@@ -947,7 +1065,7 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 
 	// timeline functions:
 	this.frame_0 = function() {
-		this.gotoAndStop(2);
+		this.gotoAndStop(1);
 		
 		//this.stop();
 		
@@ -960,10 +1078,6 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	this.timeline.addTween(cjs.Tween.get(this).call(this.frame_0).wait(4));
 
 	// Layer_1
-	this.instance = new lib.CheckPoint();
-	this.instance.parent = this;
-	this.instance.setTransform(139,328,1,1,0,0,0,0,-32);
-
 	this.startText = new lib.startButton();
 	this.startText.name = "startText";
 	this.startText.parent = this;
@@ -1033,13 +1147,33 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	this.shape_15.graphics.f("#000099").s().p("AigDgIAAhAIg/gBIAAg+IB/AAIAAA/IDAgBIAAh/IkAAAIAAg/Ig/AAIAAiAIA/AAIAAhAIEAAAIAABAIBAAAIAAA/IiAAAIAAg/IiAAAIAACAIEAAAIAAA/IBAAAIAACAIhAAAIAABAg");
 	this.shape_15.setTransform(80.5,65.6);
 
-	this.instance_1 = new lib.GameManager();
+	this.instance = new lib.GameManager();
+	this.instance.parent = this;
+
+	this.instance_1 = new lib.Editor();
 	this.instance_1.parent = this;
+	this.instance_1.setTransform(327.9,245.9,1,1,0,0,0,327.9,245.9);
 
-	this.instance_2 = new lib.Background();
+	this.instance_2 = new lib.PoopKnight();
 	this.instance_2.parent = this;
+	this.instance_2.setTransform(247.9,323.9,1,1,0,0,0,0,-30);
 
-	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_15},{t:this.shape_14},{t:this.shape_13},{t:this.shape_12},{t:this.shape_11},{t:this.shape_10},{t:this.shape_9},{t:this.shape_8},{t:this.shape_7},{t:this.shape_6},{t:this.shape_5},{t:this.shape_4},{t:this.shape_3},{t:this.shape_2},{t:this.shape_1},{t:this.shape},{t:this.startText},{t:this.instance}]}).to({state:[]},1).to({state:[{t:this.instance_1}]},1).to({state:[{t:this.instance_2}]},1).wait(1));
+	this.instance_3 = new lib.PlayerKnight();
+	this.instance_3.parent = this;
+	this.instance_3.setTransform(166,273.9,1,1,0,0,0,-1,-29);
+
+	this.instance_4 = new lib.Cloud();
+	this.instance_4.parent = this;
+	this.instance_4.setTransform(273.9,108.1);
+
+	this.instance_5 = new lib.CheckPoint();
+	this.instance_5.parent = this;
+	this.instance_5.setTransform(361.9,297.9,1,1,0,0,0,0,-32);
+
+	this.instance_6 = new lib.Background();
+	this.instance_6.parent = this;
+
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_15},{t:this.shape_14},{t:this.shape_13},{t:this.shape_12},{t:this.shape_11},{t:this.shape_10},{t:this.shape_9},{t:this.shape_8},{t:this.shape_7},{t:this.shape_6},{t:this.shape_5},{t:this.shape_4},{t:this.shape_3},{t:this.shape_2},{t:this.shape_1},{t:this.shape},{t:this.startText}]}).to({state:[{t:this.instance}]},1).to({state:[{t:this.instance_1}]},1).to({state:[{t:this.instance_6},{t:this.instance_5},{t:this.instance_4},{t:this.instance_3},{t:this.instance_2}]},1).wait(1));
 
 	// Layer_3
 	this.shape_16 = new cjs.Shape();
@@ -1059,8 +1193,8 @@ lib.properties = {
 	color: "#999999",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/index_atlas_.png?1512317910299", id:"index_atlas_"},
-		{src:"sounds/OverworldSong.mp3?1512317910378", id:"OverworldSong"}
+		{src:"images/index_atlas_.png?1512322987987", id:"index_atlas_"},
+		{src:"sounds/OverworldSong.mp3?1512322988065", id:"OverworldSong"}
 	],
 	preloads: []
 };
