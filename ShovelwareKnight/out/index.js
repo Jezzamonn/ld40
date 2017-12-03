@@ -2,11 +2,72 @@
 
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
+lib.webFontTxtInst = {}; 
+var loadedTypekitCount = 0;
+var loadedGoogleCount = 0;
+var gFontsUpdateCacheList = [];
+var tFontsUpdateCacheList = [];
 lib.ssMetadata = [
 		{name:"index_atlas_", frames: [[0,62,30,64],[32,62,30,64],[64,60,30,64],[96,60,22,34],[62,0,60,58],[0,0,60,60]]}
 ];
 
 
+
+lib.updateListCache = function (cacheList) {		
+	for(var i = 0; i < cacheList.length; i++) {		
+		if(cacheList[i].cacheCanvas)		
+			cacheList[i].updateCache();		
+	}		
+};		
+
+lib.addElementsToCache = function (textInst, cacheList) {		
+	var cur = textInst;		
+	while(cur != null && cur != exportRoot) {		
+		if(cacheList.indexOf(cur) != -1)		
+			break;		
+		cur = cur.parent;		
+	}		
+	if(cur != exportRoot) {		
+		var cur2 = textInst;		
+		var index = cacheList.indexOf(cur);		
+		while(cur2 != null && cur2 != cur) {		
+			cacheList.splice(index, 0, cur2);		
+			cur2 = cur2.parent;		
+			index++;		
+		}		
+	}		
+	else {		
+		cur = textInst;		
+		while(cur != null && cur != exportRoot) {		
+			cacheList.push(cur);		
+			cur = cur.parent;		
+		}		
+	}		
+};		
+
+lib.gfontAvailable = function(family, totalGoogleCount) {		
+	lib.properties.webfonts[family] = true;		
+	var txtInst = lib.webFontTxtInst && lib.webFontTxtInst[family] || [];		
+	for(var f = 0; f < txtInst.length; ++f)		
+		lib.addElementsToCache(txtInst[f], gFontsUpdateCacheList);		
+
+	loadedGoogleCount++;		
+	if(loadedGoogleCount == totalGoogleCount) {		
+		lib.updateListCache(gFontsUpdateCacheList);		
+	}		
+};		
+
+lib.tfontAvailable = function(family, totalTypekitCount) {		
+	lib.properties.webfonts[family] = true;		
+	var txtInst = lib.webFontTxtInst && lib.webFontTxtInst[family] || [];		
+	for(var f = 0; f < txtInst.length; ++f)		
+		lib.addElementsToCache(txtInst[f], tFontsUpdateCacheList);		
+
+	loadedTypekitCount++;		
+	if(loadedTypekitCount == totalTypekitCount) {		
+		lib.updateListCache(tFontsUpdateCacheList);		
+	}		
+};
 // symbols:
 
 
@@ -608,6 +669,10 @@ p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 				if (this.checkPoint.dead) {
 					this.addCheckPoint();
 					this.atCheckPoint = false;
+					
+					this.reputation -= Math.round(40 + 30 * Math.random());
+					this.reputationText.text = "REPUTATION: " + this.reputation;
+					this.moveSpeed += 2;
 				}
 			}
 			else {
@@ -645,7 +710,7 @@ p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 		this.addEventListener('tick', this.everyFrame);
 		
 		// Play song
-		createjs.Sound.play('OverworldSong', createjs.Sound.INTERRUPT_NONE, 0, 30, -1);
+		createjs.Sound.play('OverworldSong', createjs.Sound.INTERRUPT_NONE, 0, 20, -1);
 	}
 
 	// actions tween:
@@ -657,63 +722,18 @@ p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 	this.craftButton.parent = this;
 	this.craftButton.setTransform(361.2,45.6);
 
-	this.shape = new cjs.Shape();
-	this.shape.graphics.f("#000000").s().p("AgdBGIAAgUIgUAAIAAgUIgUAAIAAg7IAUAAIAAgUIAUAAIAAgUIA7AAIAAAUIAUAAIAAAUIAUAAIAAA7IgUAAIAAAUIgUAAIAAhPIgUAAIAAgUIgnAAIAnAAIAAAUIAUAAIAABPIgnAAIAAgUIgUAAIAAhPIAABPIAUAAIAAAUIAnAAIAAAUgAAeAygAAeAyg");
-	this.shape.setTransform(233.4,24.8);
+	this.reputationText = new cjs.Text("REPUTATION: 100", "normal 400 29px 'VT323'");
+	this.reputationText.name = "reputationText";
+	this.reputationText.lineHeight = 39;
+	this.reputationText.lineWidth = 239;
+	this.reputationText.parent = this;
+	this.reputationText.setTransform(6.4,4.8);
+	if(!lib.properties.webfonts['VT323']) {
+		lib.webFontTxtInst['VT323'] = lib.webFontTxtInst['VT323'] || [];
+		lib.webFontTxtInst['VT323'].push(this.reputationText);
+	}
 
-	this.shape_1 = new cjs.Shape();
-	this.shape_1.graphics.f("#000000").s().p("AgdBGIAAgUIgUAAIAAgUIgUAAIAAg7IAUAAIAAgUIAUAAIAABPIAUAAIAAAUIAnAAIAAAUgAAeAyIAAhPIgUAAIAAgUIgnAAIAAgUIA7AAIAAAUIAUAAIAAAUIAUAAIAAA7IgUAAIAAAUgAAeAygAAeAyIgnAAIAAgUIgUAAIAAhPIAnAAIAAAUIAUAAIAABPgAgdgxg");
-	this.shape_1.setTransform(217.4,24.8);
-
-	this.shape_2 = new cjs.Shape();
-	this.shape_2.graphics.f("#000000").s().p("Ag7BGIAAgUIAoAAIAAhPIgUAAIAAgUIAUAAIAAgUIAnAAIAAB3IAoAAIAAAUg");
-	this.shape_2.setTransform(202.4,24.8);
-
-	this.shape_3 = new cjs.Shape();
-	this.shape_3.graphics.f("#000000").s().p("AgTAyIAAgoIAnAAIAAAogAgTgJIAAgoIAnAAIAAAog");
-	this.shape_3.setTransform(186.4,26.8);
-
-	this.shape_4 = new cjs.Shape();
-	this.shape_4.graphics.f("#000000").s().p("AAeBGIAAgUIgUAAIAAgUIgTAAIAAgUIgUAAIAAA8IgoAAIAAiLIAoAAIAAAUIAUAAIAAAUIATAAIAAAUIAUAAIAAg8IAoAAIAACLg");
-	this.shape_4.setTransform(169.4,24.8);
-
-	this.shape_5 = new cjs.Shape();
-	this.shape_5.graphics.f("#000000").s().p("AgxBGIAAgUIgUAAIAAhjIAUAAIAAgUIBjAAIAAAUIAUAAIAABjIgUAAIAAAUgAgdAyIA7AAIAAhjIg7AAg");
-	this.shape_5.setTransform(153.4,24.8);
-
-	this.shape_6 = new cjs.Shape();
-	this.shape_6.graphics.f("#000000").s().p("Ag7BGIAAgUIAoAAIAAhjIgoAAIAAgUIB3AAIAAAUIgoAAIAABjIAoAAIAAAUg");
-	this.shape_6.setTransform(138.4,24.8);
-
-	this.shape_7 = new cjs.Shape();
-	this.shape_7.graphics.f("#000000").s().p("AgTBGIAAh3IgoAAIAAgUIB3AAIAAAUIgoAAIAAB3g");
-	this.shape_7.setTransform(122.4,24.8);
-
-	this.shape_8 = new cjs.Shape();
-	this.shape_8.graphics.f("#000000").s().p("AAeBGIAAgoIg7AAIAAAoIgoAAIAAhjIAUAAIAAgUIAUAAIAAgUIA7AAIAAAUIAUAAIAAAUIAUAAIAABjgAgdAKIA7AAIAAgnIgUAAIAAgUIgTAAIAAAUIgUAAg");
-	this.shape_8.setTransform(105.4,24.8);
-
-	this.shape_9 = new cjs.Shape();
-	this.shape_9.graphics.f("#000000").s().p("AgTBGIAAh3IgoAAIAAgUIB3AAIAAAUIgoAAIAAB3g");
-	this.shape_9.setTransform(90.4,24.8);
-
-	this.shape_10 = new cjs.Shape();
-	this.shape_10.graphics.f("#000000").s().p("AgxBGIAAgUIgUAAIAAh3IAoAAIAAB3IA7AAIAAh3IAoAAIAAB3IgUAAIAAAUg");
-	this.shape_10.setTransform(73.4,24.8);
-
-	this.shape_11 = new cjs.Shape();
-	this.shape_11.graphics.f("#000000").s().p("AhFBGIAAiLIB3AAIAAAUIAUAAIAAA7IgUAAIAAAUIhPAAIAAAogAgdAKIA7AAIAAg7Ig7AAg");
-	this.shape_11.setTransform(57.4,24.8);
-
-	this.shape_12 = new cjs.Shape();
-	this.shape_12.graphics.f("#000000").s().p("AhFBGIAAiLICLAAIAAAUIhjAAIAAAoIBPAAIAAATIhPAAIAAAoIBjAAIAAAUg");
-	this.shape_12.setTransform(41.4,24.8);
-
-	this.shape_13 = new cjs.Shape();
-	this.shape_13.graphics.f("#000000").s().p("AAKBGIAAgUIgTAAIAAgUIgUAAIAAAoIgoAAIAAiLIB3AAIAAAUIAUAAIAAA7IgoAAIAAAUIAUAAIAAAUIAUAAIAAAUgAgdAKIAnAAIAAgTIAUAAIAAgoIg7AAg");
-	this.shape_13.setTransform(25.4,24.8);
-
-	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.shape_13},{t:this.shape_12},{t:this.shape_11},{t:this.shape_10},{t:this.shape_9},{t:this.shape_8},{t:this.shape_7},{t:this.shape_6},{t:this.shape_5},{t:this.shape_4},{t:this.shape_3},{t:this.shape_2},{t:this.shape_1},{t:this.shape},{t:this.craftButton}]}).wait(1));
+	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.reputationText},{t:this.craftButton}]}).wait(1));
 
 	// Where Backrgound Goes
 	this.bgLaya = new lib.empty();
@@ -722,7 +742,7 @@ p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 
 	this.timeline.addTween(cjs.Tween.get(this.bgLaya).wait(1));
 
-}).prototype = getMCSymbolPrototype(lib.GameManager, new cjs.Rectangle(16.4,8.7,425.2,73.7), null);
+}).prototype = getMCSymbolPrototype(lib.GameManager, new cjs.Rectangle(4.4,2.8,437.2,79.7), null);
 
 
 (lib.Editor = function(mode,startPosition,loop) {
@@ -1192,9 +1212,10 @@ lib.properties = {
 	fps: 24,
 	color: "#999999",
 	opacity: 1.00,
+	webfonts: {},
 	manifest: [
-		{src:"images/index_atlas_.png?1512322987987", id:"index_atlas_"},
-		{src:"sounds/OverworldSong.mp3?1512322988065", id:"OverworldSong"}
+		{src:"images/index_atlas_.png?1512328658314", id:"index_atlas_"},
+		{src:"sounds/OverworldSong.mp3?1512328658395", id:"OverworldSong"}
 	],
 	preloads: []
 };
