@@ -33,3 +33,21 @@ inp.files
 document.getElementById('file').onchange = function() {
     // fire the upload here
 };
+
+
+
+// ---- Generating a file ------
+var data_text = globalImage.bitmap.image.src;
+var data_split = data_text.split(',');
+var fileInfo = data_split[0];
+var data = atob(data_split[1]);
+
+var zip = new JSZip();
+zip.file('image.jpg', data, {binary: true});
+
+// Save
+zip.generateAsync({type:"blob"})
+.then(function(content) {
+    // see FileSaver.js
+    saveAs(content, "example.zip");
+});

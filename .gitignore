@@ -3,3 +3,5 @@ music\ source/*
 *.zip
 RECOVER_*
 promo/
+node_modules
+package-lock.json
