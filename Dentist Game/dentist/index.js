@@ -9,8 +9,8 @@ lib.ssMetadata = [];
 
 
 
-(lib.elsa = function() {
-	this.initialize(img.elsa);
+(lib.image = function() {
+	this.initialize(img.image);
 }).prototype = p = new cjs.Bitmap();
 p.nominalBounds = new cjs.Rectangle(0,0,300,187);// helper functions:
 
@@ -351,7 +351,7 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
 
 	// JB
-	this.instance_1 = new lib.elsa();
+	this.instance_1 = new lib.image();
 	this.instance_1.parent = this;
 	this.instance_1.setTransform(-36,14.7,2.388,2.425);
 
@@ -368,7 +368,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/elsa.jpg?1512244666977", id:"elsa"}
+		{src:"images/image.jpg?1512284614556", id:"image"}
 	],
 	preloads: []
 };
