@@ -116,15 +116,15 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 		this.addEventListener("mouseover", onOver.bind(this));
 		
 		function onOver() {
-			this.cavity.visible = true;
-			this.dirt.visible = false;
-		}
-		
-		this.addEventListener("mouseout", onOut.bind(this));
-		
-		function onOut() {
-			this.cavity.visible = false;
-			this.dirt.visible = false;
+			console.log(curToolIndex);
+			switch (curToolIndex) {
+				case 0:
+					this.cavity.visible = false;
+					break;
+				case 1:
+					this.dirt.visible = false;
+					break;
+			}
 		}
 	}
 
@@ -326,8 +326,6 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 
 	// timeline functions:
 	this.frame_0 = function() {
-		var tools = [this.tool1, this.tool2];
-		
 		// SET POSITION OF STUFF. These lines are set when the game is built >:)
 		/*COMMENTED_FOR_DEV
 		this.image.x = __IMAGE_X__;
@@ -346,6 +344,11 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 		this.mouth.rotation = __MOUTH_ROTATION__;
 		COMMENTED_FOR_DEV*/
 		
+		var tools = [this.tool1, this.tool2];
+		
+		// aw yeah global variable
+		curToolIndex = -1;
+		
 		for (var i = 0; i < tools.length; i++) {
 			var tool = tools[i];
 			tool.toolIndex = i;
@@ -360,14 +363,18 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 			evt.currentTarget.x = evt.stageX;
 			evt.currentTarget.y = evt.stageY;
 			evt.currentTarget.mouseEnabled = false;
-			console.log(evt.currentTarget.toolIndex);
+			
+			curToolIndex = evt.currentTarget.toolIndex;
+			//console.log(currentToolIndex);
 		}
 		
 		function onToolDrop(evt) {
 			evt.currentTarget.x = evt.currentTarget.startX;
 			evt.currentTarget.y = evt.currentTarget.startY;
 			evt.currentTarget.mouseEnabled = true;
-			console.log(evt.currentTarget.toolIndex);
+			
+			curToolIndex = -1;
+			//console.log(currentToolIndex);
 		}
 	}
 
@@ -378,7 +385,7 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	this.tool2 = new lib.Tool2();
 	this.tool2.name = "tool2";
 	this.tool2.parent = this;
-	this.tool2.setTransform(522.8,408.2,1,1,0,0,0,18.6,51.2);
+	this.tool2.setTransform(506.8,352.2,1,1,0,0,0,3.6,4.2);
 
 	this.tool1 = new lib.Tool1();
 	this.tool1.name = "tool1";
@@ -404,7 +411,7 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	this.timeline.addTween(cjs.Tween.get(this.image).wait(1));
 
 }).prototype = p = new cjs.MovieClip();
-p.nominalBounds = new cjs.Rectangle(506.2,271.4,355.2,428.7);
+p.nominalBounds = new cjs.Rectangle(506.2,271.4,354.2,428.7);
 // library properties:
 lib.properties = {
 	id: '11D9FCE18AE34DA1B54ACEF141F167BF',
@@ -414,7 +421,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/image.jpg?1512288254169", id:"image"}
+		{src:"images/image.jpg?1512292689418", id:"image"}
 	],
 	preloads: []
 };
