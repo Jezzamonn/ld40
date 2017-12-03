@@ -51,3 +51,21 @@ zip.generateAsync({type:"blob"})
     // see FileSaver.js
     saveAs(content, "example.zip");
 });
+
+
+// ---- load file -----
+JSZipUtils.getBinaryContent('dentist.zip', function(err, data) {
+    if(err) {
+        throw err; // or handle err
+    }
+    
+    zip = new JSZip();
+    zip.loadAsync(data).then(function () {
+        console.log('doneski');
+    });
+});
+
+// --- reading part of the file ---
+zip.file("dentist/index.js").async("string").then(function (data) {
+  // data is "Hello World\n"
+});

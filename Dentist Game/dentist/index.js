@@ -12,7 +12,7 @@ lib.ssMetadata = [];
 (lib.image = function() {
 	this.initialize(img.image);
 }).prototype = p = new cjs.Bitmap();
-p.nominalBounds = new cjs.Rectangle(0,0,300,187);// helper functions:
+p.nominalBounds = new cjs.Rectangle(0,0,300,300);// helper functions:
 
 function mc_symbol_clone() {
 	var clone = this._cloneProps(new this.constructor(this.mode, this.startPosition, this.loop));
@@ -83,6 +83,18 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	this.timeline.addTween(cjs.Tween.get(this.shape).wait(1));
 
 }).prototype = getMCSymbolPrototype(lib.cavity, new cjs.Rectangle(-2.8,-3.4,5.6,6.8), null);
+
+
+(lib.BitmapHolder = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// Layer_1
+	this.instance = new lib.image();
+	this.instance.parent = this;
+
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.BitmapHolder, new cjs.Rectangle(0,0,300,300), null);
 
 
 (lib.Tooth = function(mode,startPosition,loop) {
@@ -294,6 +306,20 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 }).prototype = getMCSymbolPrototype(lib.Mouth, new cjs.Rectangle(-66.9,-36.3,132.4,76.9), null);
 
 
+(lib.image_1 = function(mode,startPosition,loop) {
+	this.initialize(mode,startPosition,loop,{});
+
+	// Layer_1
+	this.holder = new lib.BitmapHolder();
+	this.holder.name = "holder";
+	this.holder.parent = this;
+	this.holder.setTransform(-150,-150);
+
+	this.timeline.addTween(cjs.Tween.get(this.holder).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.image_1, new cjs.Rectangle(-150,-150,300,300), null);
+
+
 // stage content:
 (lib.DentistGame = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
@@ -301,6 +327,24 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	// timeline functions:
 	this.frame_0 = function() {
 		var tools = [this.tool1, this.tool2];
+		
+		// SET POSITION OF STUFF. These lines are set when the game is built >:)
+		/*COMMENTED_FOR_DEV
+		this.image.x = __IMAGE_X__;
+		this.image.y = __IMAGE_Y__;
+		this.image.scaleX = __IMAGE_SCALEX__;
+		this.image.scaleY = __IMAGE_SCALEY__;
+		this.image.rotation = __IMAGE_ROTATION__;
+		// Center the bitmap. Getting image sizes is iffy so just hardcode it during 'compilation'.
+		this.image.holder.x = __BITMAP_X__;
+		this.image.holder.y = __BITMAP_Y__;
+		
+		this.mouth.x = __MOUTH_X__;
+		this.mouth.y = __MOUTH_Y__;
+		this.mouth.scaleX = __MOUTH_SCALEX__;
+		this.mouth.scaleY = __MOUTH_SCALEY__;
+		this.mouth.rotation = __MOUTH_ROTATION__;
+		COMMENTED_FOR_DEV*/
 		
 		for (var i = 0; i < tools.length; i++) {
 			var tool = tools[i];
@@ -344,21 +388,23 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	this.timeline.addTween(cjs.Tween.get({}).to({state:[{t:this.tool1},{t:this.tool2}]}).wait(1));
 
 	// Mouth
-	this.instance = new lib.Mouth();
-	this.instance.parent = this;
-	this.instance.setTransform(330.9,269.4,0.619,0.592,0,-2.4,-2.5,-0.4,2.5);
+	this.mouth = new lib.Mouth();
+	this.mouth.name = "mouth";
+	this.mouth.parent = this;
+	this.mouth.setTransform(290,170.3,1,1,0,0,0,-0.3,2.6);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
+	this.timeline.addTween(cjs.Tween.get(this.mouth).wait(1));
 
 	// JB
-	this.instance_1 = new lib.image();
-	this.instance_1.parent = this;
-	this.instance_1.setTransform(-36,14.7,2.388,2.425);
+	this.image = new lib.image_1();
+	this.image.name = "image";
+	this.image.parent = this;
+	this.image.setTransform(336.2,181.4);
 
-	this.timeline.addTween(cjs.Tween.get(this.instance_1).wait(1));
+	this.timeline.addTween(cjs.Tween.get(this.image).wait(1));
 
 }).prototype = p = new cjs.MovieClip();
-p.nominalBounds = new cjs.Rectangle(284,254.7,716.4,453.4);
+p.nominalBounds = new cjs.Rectangle(506.2,271.4,355.2,428.7);
 // library properties:
 lib.properties = {
 	id: '11D9FCE18AE34DA1B54ACEF141F167BF',
@@ -368,7 +414,7 @@ lib.properties = {
 	color: "#FFFFFF",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/image.jpg?1512284614556", id:"image"}
+		{src:"images/image.jpg?1512288254169", id:"image"}
 	],
 	preloads: []
 };
