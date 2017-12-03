@@ -3,7 +3,7 @@
 var p; // shortcut to reference prototypes
 var lib={};var ss={};var img={};
 lib.ssMetadata = [
-		{name:"index_atlas_", frames: [[0,62,60,58],[0,0,60,60]]}
+		{name:"index_atlas_", frames: [[62,0,30,64],[0,62,60,58],[0,0,60,60]]}
 ];
 
 
@@ -11,16 +11,23 @@ lib.ssMetadata = [
 
 
 
-(lib.knight = function() {
+(lib.checkpoint = function() {
 	this.spriteSheet = ss["index_atlas_"];
 	this.gotoAndStop(0);
 }).prototype = p = new cjs.Sprite();
 
 
 
-(lib.PoopKnight = function() {
+(lib.knight = function() {
 	this.spriteSheet = ss["index_atlas_"];
 	this.gotoAndStop(1);
+}).prototype = p = new cjs.Sprite();
+
+
+
+(lib.PoopKnight = function() {
+	this.spriteSheet = ss["index_atlas_"];
+	this.gotoAndStop(2);
 }).prototype = p = new cjs.Sprite();
 // helper functions:
 
@@ -297,7 +304,14 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 (lib.CheckPoint = function(mode,startPosition,loop) {
 	this.initialize(mode,startPosition,loop,{});
 
-}).prototype = getMCSymbolPrototype(lib.CheckPoint, null, null);
+	// Layer_1
+	this.instance = new lib.checkpoint();
+	this.instance.parent = this;
+	this.instance.setTransform(-15,-64);
+
+	this.timeline.addTween(cjs.Tween.get(this.instance).wait(1));
+
+}).prototype = getMCSymbolPrototype(lib.CheckPoint, new cjs.Rectangle(-15,-64,30,64), null);
 
 
 (lib.Tree = function(mode,startPosition,loop) {
@@ -473,23 +487,31 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	// timeline functions:
 	this.frame_0 = function() {
 		this.reputation = 100;
+		this.moving = true;
+		this.moveSpeed = 10;
+		var checkPointPos = 100;
 		
 		this.background = new lib.Background();
 		this.player = new lib.PlayerKnight();
+		this.player.x = -100;
+		this.creations = [];
+		this.checkPoint = null;
 		
 		this.bgLaya.addChild(this.background);
 		this.background.playaLaya.addChild(this.player);
 		
-		this.moving = true;
-		
-		this.addCheckPoint = function(evt) {
+		this.addCheckPoint = function() {
+			if (this.checkPoint) {
+				this.background.checkPointLaya.removeChild(this.checkPoint);
+			}
 			this.checkPoint = new lib.CheckPoint();
+			this.checkPoint.x = 1000;
+			this.background.checkPointLaya.addChild(this.checkPoint);
 		}.bind(this);
 		
-		
+		// Bind functions here so we can remove them if needed.
 		this.onCraftClick = function(evt) {
-			if (this.moving) {
-				this.moving = false;
+			if (!this.moving) {
 				this.editor = new lib.Editor();
 				this.addChild(this.editor);
 			}
@@ -497,13 +519,20 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 		
 		
 		this.everyFrame = function(evt) {
-			
 			if (this.moving) {
-				this.background.move(-10);
+				if (this.checkPoint && this.checkPoint.x - checkPointPos < this.moveSpeed) {
+					this.background.move(-this.checkPoint.x + checkPointPos);
+					this.moving = false;
+					// Switch to the thing to enable crafting
+				}
+				else {
+					this.background.move(-this.moveSpeed);
+				}
 			}
-			
 		}.bind(this);
 		
+		
+		this.addCheckPoint();
 		
 		this.craftButton.addEventListener('click', this.onCraftClick);
 		this.addEventListener('tick', this.everyFrame);
@@ -805,18 +834,23 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 				this.cloudHolder.children[i].x += cloudMult * amount;
 			}
 			
-			this.clearOffscreen(this.treeHolder);
-			this.clearOffscreen(this.cloudHolder);
+			for (var i = 0; i < this.checkPointLaya.children.length; i ++) {
+				this.checkPointLaya.children[i].x += groundMult * amount;
+			}
+			
+			this.clearOffscreen(this.treeHolder, 0);
+			this.clearOffscreen(this.cloudHolder, 0);
+			this.clearOffscreen(this.checkPointLaya, -350);
 			
 			this.fillTrees();
 			this.fillClouds();
 		}
 		
-		this.clearOffscreen = function(holder) {
+		this.clearOffscreen = function(holder, cutoff) {
 			var toRemove = [];
 			for (var i = 0; i < holder.children.length; i ++) {
 				var child = holder.children[i];
-				if (child.x < 0) {
+				if (child.x < cutoff) {
 					toRemove.push(child);
 				}
 			}
@@ -860,6 +894,14 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 	this.playaLaya.setTransform(320,350);
 
 	this.timeline.addTween(cjs.Tween.get(this.playaLaya).wait(1));
+
+	// Checkpoints & Misc
+	this.checkPointLaya = new lib.empty();
+	this.checkPointLaya.name = "checkPointLaya";
+	this.checkPointLaya.parent = this;
+	this.checkPointLaya.setTransform(320,350);
+
+	this.timeline.addTween(cjs.Tween.get(this.checkPointLaya).wait(1));
 
 	// Ground
 	this.ground = new lib.Ground();
@@ -1014,7 +1056,7 @@ lib.properties = {
 	color: "#999999",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/index_atlas_.png?1512289366487", id:"index_atlas_"}
+		{src:"images/index_atlas_.png?1512291502341", id:"index_atlas_"}
 	],
 	preloads: []
 };
