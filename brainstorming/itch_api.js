@@ -69,3 +69,14 @@ JSZipUtils.getBinaryContent('dentist.zip', function(err, data) {
 zip.file("dentist/index.js").async("string").then(function (data) {
   // data is "Hello World\n"
 });
+
+
+// --- the form for the thing ----
+<form style="
+    position: absolute;
+    top: 100px;
+    left: 100px;
+    font-size: 30px;
+    font-family: &quot;VT323&quot;;">
+    First name: <input id="nameInput" type="text" name="nameInput" value=""><br>
+</form>

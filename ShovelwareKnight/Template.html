@@ -49,7 +49,15 @@ $SCRIPT_END
 		<canvas id="$CANVAS_ID" width="$WT" height="$HT" style="position: absolute; display: $CANVAS_DISP; background-color:$BG;"></canvas>
 		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:$WTpx; height:$HTpx; position: absolute; left: 0px; top: 0px; display: $CANVAS_DISP;">
 		</div>
-	</div>
+		<form id="secretForm" onkeypress="if (event.keyCode == 13) {return false;}" style="display: none;
+		    position: absolute;
+		    top: 100px;
+		    left: 150px;
+		    font-size: 30px;
+		    font-family: &quot;VT323&quot;;">
+		    First name: <input id="nameInput" type="text" name="nameInput" value=""><br>
+		</form>
+		</div>
     $PRELOADER_DIV
 </body>
 </html>

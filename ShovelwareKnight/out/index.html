@@ -68,7 +68,7 @@ function isFontAvailable(font, obj) {
 	var gFontsFamilies = ["VT323"];
 </script>
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=VT323:regular&subset=latin">
-<script src="index.js?1512334782482"></script>
+<script src="index.js?1512337536109"></script>
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 function init() {
@@ -168,6 +168,14 @@ function playSound(id, loop) {
 		<canvas id="canvas" width="640" height="480" style="position: absolute; display: block; background-color:rgba(153, 153, 153, 1.00);"></canvas>
 		<div id="dom_overlay_container" style="pointer-events:none; overflow:hidden; width:640px; height:480px; position: absolute; left: 0px; top: 0px; display: block;">
 		</div>
-	</div>
+		<form id="secretForm" onkeypress="if (event.keyCode == 13) {return false;}" style="display: none;
+		    position: absolute;
+		    top: 100px;
+		    left: 150px;
+		    font-size: 30px;
+		    font-family: &quot;VT323&quot;;">
+		    First name: <input id="nameInput" type="text" name="nameInput" value=""><br>
+		</form>
+		</div>
 </body>
 </html>
