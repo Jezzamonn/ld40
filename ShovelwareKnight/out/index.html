@@ -17,7 +17,7 @@
 <script src="js/FileSaver.js"></script>
 <script src="js/gamegenerator.js"></script>
 <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
-<script src="index.js?1512291502412"></script>
+<script src="index.js?1512317910385"></script>
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 function init() {
@@ -27,6 +27,7 @@ function init() {
 	var comp=AdobeAn.getComposition("D42CE693D01346F0B0617E35B8588BF1");
 	var lib=comp.getLibrary();
 	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
 	loader.addEventListener("fileload", function(evt){handleFileLoad(evt,comp)});
 	loader.addEventListener("complete", function(evt){handleComplete(evt,comp)});
 	var lib=comp.getLibrary();
@@ -92,6 +93,9 @@ function handleComplete(evt,comp) {
 	makeResponsive(false,'both',false,1);	
 	AdobeAn.compositionLoaded(lib.properties.id);
 	fnStartAnimation();
+}
+function playSound(id, loop) {
+	return createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
 }
 </script>
 </head>

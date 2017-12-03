@@ -536,6 +536,9 @@ function getMCSymbolPrototype(symbol, nominalBounds, frameBounds) {
 		
 		this.craftButton.addEventListener('click', this.onCraftClick);
 		this.addEventListener('tick', this.everyFrame);
+		
+		// Play song
+		createjs.Sound.play('OverworldSong', createjs.Sound.INTERRUPT_NONE, 0, 30, -1);
 	}
 
 	// actions tween:
@@ -1056,7 +1059,8 @@ lib.properties = {
 	color: "#999999",
 	opacity: 1.00,
 	manifest: [
-		{src:"images/index_atlas_.png?1512291502341", id:"index_atlas_"}
+		{src:"images/index_atlas_.png?1512317910299", id:"index_atlas_"},
+		{src:"sounds/OverworldSong.mp3?1512317910378", id:"OverworldSong"}
 	],
 	preloads: []
 };
