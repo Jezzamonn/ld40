@@ -845,8 +845,8 @@ lib.properties = {
 	opacity: 1.00,
 	webfonts: {},
 	manifest: [
-		{src:"images/image.jpg?1512350034826", id:"image"},
-		{src:"sounds/Song.mp3?1512350034826", id:"Song"}
+		{src:"images/image.jpg?1512350086192", id:"image"},
+		{src:"sounds/Song.mp3?1512350086192", id:"Song"}
 	],
 	preloads: []
 };
