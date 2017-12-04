@@ -1056,11 +1056,18 @@ p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 				var newFrame = this.currentFrame + 48 - 24;
 				newFrame -= newFrame % 48;
 				newFrame += 24;
-				this.gotoAndStop(newFrame);
+				if (newFrame >= this.totalFrames) {
+					// just do nothing. Safer.
+				}
+				else {
+					this.gotoAndStop(newFrame);
+				}
 			}
 		}
 		
 		this.addEventListener("click", resume.bind(this));
+		
+		this.sound = createjs.Sound.play("IntroSong", {loop: -1});
 	}
 	this.frame_24 = function() {
 		this.stop();
@@ -1090,6 +1097,7 @@ p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 		this.stop();
 	}
 	this.frame_432 = function() {
+		this.sound.paused = true;
 		this.parent.gotoAndStop(1);
 	}
 
@@ -2119,7 +2127,7 @@ p.nominalBounds = new cjs.Rectangle(-15.9,-23.9,679.8,533.8);
 		this.nextButton.addEventListener("click", nextStep.bind(this));
 		this.doneButton.addEventListener("click", done.bind(this));
 		this.muteButton.addEventListener("click", function() {
-			createjs.Sound.muted = true;
+			createjs.Sound.muted = !createjs.Sound.muted;
 		});
 		
 		// Dragging / Selecting
@@ -3478,8 +3486,9 @@ lib.properties = {
 	opacity: 1.00,
 	webfonts: {},
 	manifest: [
-		{src:"images/index_atlas_.png?1512347032599", id:"index_atlas_"},
-		{src:"sounds/OverworldSong.mp3?1512347032898", id:"OverworldSong"}
+		{src:"images/index_atlas_.png?1512348711730", id:"index_atlas_"},
+		{src:"sounds/IntroSong.mp3?1512348712048", id:"IntroSong"},
+		{src:"sounds/OverworldSong.mp3?1512348712048", id:"OverworldSong"}
 	],
 	preloads: []
 };
