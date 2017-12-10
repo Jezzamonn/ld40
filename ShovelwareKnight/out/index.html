@@ -68,7 +68,7 @@ function isFontAvailable(font, obj) {
 	var gFontsFamilies = ["VT323"];
 </script>
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=VT323:regular&subset=latin">
-<script src="index.js?1512857284406"></script>
+<script src="index.js?1512870637494"></script>
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 function init() {
@@ -171,14 +171,32 @@ function playSound(id, loop) {
 		<form id="secretForm" onkeypress="if (event.keyCode == 13) {return false;}" style="display: none;
 		    position: absolute;
 		    top: 100px;
-		    left: 150px;
-		    font-size: 30px;
+		    left: 50px;
+		    width: 550px;
+		    font-size: 22px;
+		    line-height: 120%;
 		    font-family: &quot;VT323&quot;;">
-		    Character Name: <input id="nameInput" type="text" name="nameInput" value=""><br>
+		    Character Name: <input id="nameInput" type="text" name="nameInput" value="" placeholder="Name"><br><br>
+		    (Optional)<br>
+		    Something they are: <input id="thingTheyAreInput" type="text" name="thingTheyAreInput" value="" placeholder="a character"><br>
+		    Something they could be doing: <input id="actionInput" type="text" name="actionInput" value="" placeholder="walking"><br>
+		    An adjective: <input id="adj1Input" type="text" name="adj1Input" value="" placeholder="good"><br>
+		    An animal: <input id="animalInput" type="text" name="animalInput" value="" placeholder="dog"><br>
+		    Another adjective: <input id="adj2Input" type="text" name="adj2Input" value="" placeholder="tall"><br>
+		    Name of someone entirely unrelated: <input id="nounInput" type="text" name="nounInput" value="" placeholder="Name"><br>
+		    Something you could dress up as for halloween: <input id="halloweenInput" type="text" name="halloweenInput" value="" placeholder="ghost"><br>
 		</form>
+		<div id="descriptionDiv" style="display: none;
+		    position: absolute;
+		    top: 200px;
+		    left: 50px;
+		    width: 540px;
+		    font-size: 17px;
+		    font-family: &quot;VT323&quot;;">
+		</div>
 		<form id="secretForm2" onkeypress="if (event.keyCode == 13) {return false;}" style="display: none;
 		    position: absolute;
-		    top: 300px;
+		    top: 320px;
 		    left: 150px;
 		    font-size: 30px;
 		    font-family: &quot;VT323&quot;;">
