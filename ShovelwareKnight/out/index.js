@@ -2470,7 +2470,7 @@ p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 			this.imageHolder.removeAllChildren();
 			
 			var game = globalGames[index];
-			var mc = createjs.MovieClip();
+			var mc = new createjs.MovieClip();
 			mc.x = 0.25 * 640;
 			mc.y = 0.25 * 480;
 			mc.scaleX = 0.5;
@@ -2492,7 +2492,7 @@ p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 			var url = document.getElementById("urlInput").value;
 			if (url.length > 0 && url.indexOf('itch.io') >= 0) {
 				// just say it works
-				this.gotoAndStop(1);
+				this.gotoAndStop(this.currentFrame + 1);
 			}
 			else {
 				this.error.visible = true;
@@ -2505,7 +2505,7 @@ p.nominalBounds = new cjs.Rectangle(-15,-64,30,64);
 	this.frame_1 = function() {
 		document.getElementById("secretForm2").style.display = "block";
 		document.getElementById("descriptionDiv").style.display = "block";
-		var description = "Oh no! __CHARACTER__ was too busy __ACTION__ that they haven't been brushing their teeth! Help clean up their __BAD_ADJECTIVE__ mouth so they can go back to the being __THING_THEY_ARE__ with their __GOOD_ADJECTIVE__ pet __ANIMAL__, \"__ANIMAL_NAME_1__ Mc__ANIMAL_NAME_2__\".";
+		var description = "Oh no! __CHARACTER__ was too busy __ACTION__ that they haven't been brushing their teeth! Help clean up their __BAD_ADJECTIVE__ mouth so they can go back to the being __THING_THEY_ARE__ with their __GOOD_ADJECTIVE__ pet __ANIMAL__, \"__ANIMAL_NAME_1__ __ANIMAL_NAME_2__\".";
 		document.getElementById("descriptionDiv").innerHTML = 
 		    description
 		          .replace(/__CHARACTER__/g, game.name)
@@ -7044,9 +7044,9 @@ lib.properties = {
 	opacity: 1.00,
 	webfonts: {},
 	manifest: [
-		{src:"images/index_atlas_.png?1512870636979", id:"index_atlas_"},
-		{src:"sounds/IntroSong.mp3?1512870637468", id:"IntroSong"},
-		{src:"sounds/OverworldSong.mp3?1512870637468", id:"OverworldSong"}
+		{src:"images/index_atlas_.png?1512925192859", id:"index_atlas_"},
+		{src:"sounds/IntroSong.mp3?1512925193390", id:"IntroSong"},
+		{src:"sounds/OverworldSong.mp3?1512925193390", id:"OverworldSong"}
 	],
 	preloads: []
 };
