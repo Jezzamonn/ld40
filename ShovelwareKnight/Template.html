@@ -90,6 +90,25 @@ $SCRIPT_END
 		    font-family: &quot;VT323&quot;;">
 		    Itch URL: <input id="urlInput" type="text" name="urlInput" value=""><br>
 		</form>
+		<div id="postDiv" style="display: none;
+		    position: absolute;
+		    border: solid;
+		    border-width: 1px;
+		    padding: 5px;
+		    top: 180px;
+		    left: 50px;
+		    width: 530px;
+		    font-size: 17px;
+		    font-family: &quot;VT323&quot;;">
+		</div>
+		<form id="postForm" onkeypress="if (event.keyCode == 13) {return false;}" style="display: none;
+		    position: absolute;
+		    top: 320px;
+		    left: 150px;
+		    font-size: 30px;
+		    font-family: &quot;VT323&quot;;">
+		    Post URL: <input id="postInput" type="text" name="postInput" value=""><br>
+		</form>
 		</div>
     $PRELOADER_DIV
 </body>

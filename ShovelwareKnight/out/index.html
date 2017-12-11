@@ -16,7 +16,7 @@
 <script src="js/jszip-utils.js"></script>
 <script src="js/FileSaver.js"></script>
 <script src="js/gamegenerator.js"></script>
-<script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
+<script src="libs/createjs-2015.11.26.min.js"></script>
 <script>
 function LoadGFonts(families, comp) {				
 	var lib=comp.getLibrary();				
@@ -68,7 +68,7 @@ function isFontAvailable(font, obj) {
 	var gFontsFamilies = ["VT323"];
 </script>
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=VT323:regular&subset=latin">
-<script src="index.js?1512925193416"></script>
+<script src="index.js?1512970474438"></script>
 <script>
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
 function init() {
@@ -201,6 +201,25 @@ function playSound(id, loop) {
 		    font-size: 30px;
 		    font-family: &quot;VT323&quot;;">
 		    Itch URL: <input id="urlInput" type="text" name="urlInput" value=""><br>
+		</form>
+		<div id="postDiv" style="display: none;
+		    position: absolute;
+		    border: solid;
+		    border-width: 1px;
+		    padding: 5px;
+		    top: 180px;
+		    left: 50px;
+		    width: 530px;
+		    font-size: 17px;
+		    font-family: &quot;VT323&quot;;">
+		</div>
+		<form id="postForm" onkeypress="if (event.keyCode == 13) {return false;}" style="display: none;
+		    position: absolute;
+		    top: 320px;
+		    left: 150px;
+		    font-size: 30px;
+		    font-family: &quot;VT323&quot;;">
+		    Post URL: <input id="postInput" type="text" name="postInput" value=""><br>
 		</form>
 		</div>
 </body>

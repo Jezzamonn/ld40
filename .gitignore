@@ -5,3 +5,4 @@ RECOVER_*
 promo/
 node_modules
 package-lock.json
+*/out/libs

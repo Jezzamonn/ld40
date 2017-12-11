@@ -46,7 +46,7 @@ function generateGame(game) {
 	  	  .replace(/__MOUTH_SCALEY__/g, game.mouth.scaleY)
 	  	  .replace(/__MOUTH_ROTATION__/g, game.mouth.rotation)
 	  	  // TODO(optionally) escape this properly
-	  	  .replace(/__CHARACTER__/g, game.name.replace('"', '\\"'));
+	  	  .replace(/__CHARACTER__/g, (game.name || "Someone").replace('"', '\\"'));
 
 	  	dentistGameZip.file('DentistGame/index.js', data);
 
@@ -56,4 +56,17 @@ function generateGame(game) {
 	    // see FileSaver.js
 	    saveAs(content, "DentistGame.zip");
 	});
+}
+
+
+function getPostWords(game) {
+	var postWords = "Finally, live your dreams as __CHARACTER__'s " +
+	"__ADJECTIVE_2__ dentist!\n\n" +
+	"__URL__\n\n" +
+	"#gamedev #__ADJECTIVE_1__ #SWKGAME";
+	return postWords
+          .replace(/__CHARACTER__/g, game.name || "Someone")
+	  	  .replace(/__ADJECTIVE_1__/g, (game.adj1 || "wonderful").replace(/\s/g, ''))
+	  	  .replace(/__ADJECTIVE_2__/g, game.adj2 || "beautiful")
+	  	  .replace(/__URL__/g, game.url || "https://jezzamon.itch.io/shovelware-knight");
 }
