@@ -70,3 +70,25 @@ function getPostWords(game) {
 	  	  .replace(/__ADJECTIVE_2__/g, game.adj2 || "beautiful")
 	  	  .replace(/__URL__/g, game.url || "https://jezzamon.itch.io/shovelware-knight");
 }
+
+function hideCurrentThing(evt) {
+	globalGameManager.exitEditor();
+	createjs.Sound.muted = false;
+	document.getElementById("secretForm").style.display = "none";
+	document.getElementById("secretForm2").style.display = "none";
+	document.getElementById("descriptionDiv").style.display = "none";
+	document.getElementById("postForm").style.display = "none";
+	document.getElementById("postDiv").style.display = "none";
+
+	document.getElementById("name" + "Input").value = "";
+	document.getElementById("thingTheyAre" + "Input").value = "";
+	document.getElementById("action" + "Input").value = "";
+	document.getElementById("adj1" + "Input").value = "";
+	document.getElementById("adj2" + "Input").value = "";
+	document.getElementById("animal" + "Input").value = "";
+	document.getElementById("noun" + "Input").value = "";
+	document.getElementById("halloween" + "Input").value = "";
+	
+	document.getElementById("url" + "Input").value = "";
+	document.getElementById("post" + "Input").value = "";
+}
