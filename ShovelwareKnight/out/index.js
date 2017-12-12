@@ -5058,7 +5058,6 @@ p.nominalBounds = new cjs.Rectangle(-15.9,-23.9,679.8,533.8);
 		}
 		
 		function done(evt) {
-			globalGameManager.exitEditor();
 			if (this.alreadyImageUrl) {
 				globalGameManager.craftButton.visible = false;
 				globalGameManager.publishButton.visible = false;
@@ -5071,7 +5070,7 @@ p.nominalBounds = new cjs.Rectangle(-15.9,-23.9,679.8,533.8);
 			else {
 				globalGameManager.addNewBot();
 			}
-			createjs.Sound.muted = false;
+			hideCurrentThing();
 		}
 		
 		if (this.alreadyImageUrl) {
@@ -6176,8 +6175,8 @@ p.nominalBounds = new cjs.Rectangle(6.6,2.5,625.1,471.6);
 		}
 		
 		function done(evt) {
-			globalGameManager.exitEditor();
 			globalGameManager.upgradeBot();
+			hideCurrentThing();
 		}
 		
 		function checkGame(evt) {
@@ -7289,8 +7288,8 @@ p.nominalBounds = new cjs.Rectangle(-30,-29,60,58);
 		}
 		
 		function done(evt) {
-			globalGameManager.exitEditor();
 			globalGameManager.bigUpgradeBot();
+			hideCurrentThing();
 		}
 		
 		function checkPostUrl(evt) {
@@ -8333,9 +8332,9 @@ lib.properties = {
 	opacity: 1.00,
 	webfonts: {},
 	manifest: [
-		{src:"images/index_atlas_.png?1513047261801", id:"index_atlas_"},
-		{src:"sounds/IntroSong.mp3?1513047262372", id:"IntroSong"},
-		{src:"sounds/OverworldSong.mp3?1513047262372", id:"OverworldSong"}
+		{src:"images/index_atlas_.png?1513064270467", id:"index_atlas_"},
+		{src:"sounds/IntroSong.mp3?1513064271077", id:"IntroSong"},
+		{src:"sounds/OverworldSong.mp3?1513064271077", id:"OverworldSong"}
 	],
 	preloads: []
 };
